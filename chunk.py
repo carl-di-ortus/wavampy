@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 
 """Defines classes that wrap different chunks in a WAV file."""
 
