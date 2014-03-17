@@ -40,7 +40,7 @@ class WaveFormatChunk:
         self.dwSamplesPerSec = dwSamplesPerSec
         self.wBitsPerSample = wBitsPerSample
         self.wBlockAlign = wChannels * (wBitsPerSample / 8)
-        self.dwAvgBytesPerSec = dwSamplesPerSec * wBlockAlign
+        self.dwAvgBytesPerSec = dwSamplesPerSec * self.wBlockAlign
 
 
 class WaveDataChunk:
@@ -50,7 +50,7 @@ class WaveDataChunk:
             dwChunkSize - length of header in bytes
             shortArray - 8-bit audio"""
     
-    def __init__(dwChunkSize=0, shortArray=[]):
+    def __init__(self, dwChunkSize=0, shortArray=[]):
         self.sChunkID = "data"
         self.dwChunkSize = dwChunkSize
         self.shortArray = shortArray
