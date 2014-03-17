@@ -46,7 +46,43 @@ class wavegen:
                     self.data.shortArray[i*2 + channel] = int(amplitude * math.sin(t * i))
         return
 
-    def save(filePath):
-        """Saves the cyrrent wave data to the specified file.
+    def save(self, filePath):
+        """Saves the current wave data to the specified file.
         File is always overwritten if already exists."""
-        pass
+        # TODO - check byte packing, check length again, check file integrity
+        
+        handle = open(filePath, 'wb')
+        
+        sid = list(self.header.sGroupID)
+        for i in range(len(sid)):
+            sid[i] = ord(sid[i])
+        handle.write(struct.pack('<4i', *sid))
+        handle.write(struct.pack('<i', *self.header.dwFileLength))
+        handle.write(struct.pack('<i', *self.header.sRiffType))
+        
+        sid = list(self.formate.sChunkID)
+        for i in range(len(sid)):
+            sid[i] = ord(sid[i])
+        handle.write(struct.pack('<4i', *sid))
+        handle.write(struct.pack('<i', *self.formate.dwChunkSize))
+        handle.write(struct.pack('<i', *self.formate.wFormatTag))
+        handle.write(struct.pack('<i', *self.formate.wChannels))
+        handle.write(struct.pack('<i', *self.formate.dwSamplesPerSec))
+        handle.write(struct.pack('<i', *self.formate.dwAvgBytesPerSec))
+        handle.write(struct.pack('<i', *self.formate.wBlockAlign))
+        handle.write(struct.pack('<i', *self.formate.wBitsPerSample))
+        
+        sid = list(self.data.sChunkID)
+        for i in range(len(sid)):
+            sid[i] = ord(sid[i])
+        handle.write(struct.pack('<4i', *sid))
+        handle.write(struct.pack('<i', *self.data.dwChunkSize))
+        for i in range(self.data.shortArray):
+            handle.write(struct.pack('<i', i))
+        
+        handle.seek(0, 2)
+        filesize = handle.tell()
+        handle.seek(4)
+        handle.write(struct.pack('<i', filesize - 8)
+        
+        handle.close()
