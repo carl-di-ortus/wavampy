@@ -5,15 +5,16 @@
 # Scripted by Carl di Ortus | reklamukibiras@gmail.com
 # Available in MIT license (see LICENCE)
 
-import wavegen
+from wavegen import *
 
 
 class Main:
     
-    def generateWave(type=wavegen.ExampleSineWave, freq=440.0, filename):
+    def generateWave(filename, type=0, freq=440.0):
         """Generates a wave and saves it to a file"""
         
-        wave = wavegen(wavegen.ExampleSineWave)
+        wave = wavegen()
+        wave.wavegen(type, freq)
         wave.save(filename);
         # SoundPlayer player = new SoundPlayer(filePath);               
         # player.Play();
