@@ -14,7 +14,7 @@ class WaveHeader:
             sRiffType - usualy 'WAVE'"""
     
     def __init__(self, sGroupID="RIFF", dwFileLength=0, sRiffType="WAVE"):
-        self.sGroupId = sGroupID
+        self.sGroupID = sGroupID
         self.dwFileLength = dwFileLength
         self.sRiffType = sRiffType
 
@@ -39,7 +39,7 @@ class WaveFormatChunk:
         self.wChannels = wChannels
         self.dwSamplesPerSec = dwSamplesPerSec
         self.wBitsPerSample = wBitsPerSample
-        self.wBlockAlign = wChannels * (wBitsPerSample / 8)
+        self.wBlockAlign = wChannels * (wBitsPerSample // 8)
         self.dwAvgBytesPerSec = dwSamplesPerSec * self.wBlockAlign
 
 

@@ -8,6 +8,7 @@
 
 import chunk
 import math
+import struct
 
 
 # Possible example waves to generate
@@ -53,36 +54,27 @@ class wavegen:
         
         handle = open(filePath, 'wb')
         
-        sid = list(self.header.sGroupID)
-        for i in range(len(sid)):
-            sid[i] = ord(sid[i])
-        handle.write(struct.pack('<4i', *sid))
-        handle.write(struct.pack('<i', *self.header.dwFileLength))
-        handle.write(struct.pack('<i', *self.header.sRiffType))
+        handle.write(self.header.sGroupID.encode('ASCII'))
+        handle.write(struct.pack('<i', self.header.dwFileLength))
+        handle.write(self.header.sRiffType.encode('ASCII'))
         
-        sid = list(self.formate.sChunkID)
-        for i in range(len(sid)):
-            sid[i] = ord(sid[i])
-        handle.write(struct.pack('<4i', *sid))
-        handle.write(struct.pack('<i', *self.formate.dwChunkSize))
-        handle.write(struct.pack('<i', *self.formate.wFormatTag))
-        handle.write(struct.pack('<i', *self.formate.wChannels))
-        handle.write(struct.pack('<i', *self.formate.dwSamplesPerSec))
-        handle.write(struct.pack('<i', *self.formate.dwAvgBytesPerSec))
-        handle.write(struct.pack('<i', *self.formate.wBlockAlign))
-        handle.write(struct.pack('<i', *self.formate.wBitsPerSample))
+        handle.write(self.formate.sChunkID.encode('ASCII'))
+        handle.write(struct.pack('<i', self.formate.dwChunkSize))
+        handle.write(struct.pack('<h', self.formate.wFormatTag))
+        handle.write(struct.pack('<h', self.formate.wChannels))
+        handle.write(struct.pack('<i', self.formate.dwSamplesPerSec))
+        handle.write(struct.pack('<i', self.formate.dwAvgBytesPerSec))
+        handle.write(struct.pack('<h', self.formate.wBlockAlign))
+        handle.write(struct.pack('<h', self.formate.wBitsPerSample))
         
-        sid = list(self.data.sChunkID)
-        for i in range(len(sid)):
-            sid[i] = ord(sid[i])
-        handle.write(struct.pack('<4i', *sid))
-        handle.write(struct.pack('<i', *self.data.dwChunkSize))
-        for i in range(self.data.shortArray):
+        handle.write(self.data.sChunkID.encode('ASCII'))
+        handle.write(struct.pack('<i', self.data.dwChunkSize))
+        for i in range(len(self.data.shortArray)):
             handle.write(struct.pack('<i', i))
         
         handle.seek(0, 2)
         filesize = handle.tell()
         handle.seek(4)
-        handle.write(struct.pack('<i', filesize - 8)
+        handle.write(struct.pack('<i', filesize - 8))
         
         handle.close()
