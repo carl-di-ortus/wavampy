@@ -12,7 +12,7 @@ class WaveHeader:
             sGroupID - usualy 'RIFF'
             dwFileLength - total file length minus 8, which is taken up by RIFF
             sRiffType - usualy 'WAVE'"""
-    
+
     def __init__(self, sGroupID="RIFF", dwFileLength=0, sRiffType="WAVE"):
         self.sGroupID = sGroupID
         self.dwFileLength = dwFileLength
@@ -30,7 +30,7 @@ class WaveFormatChunk:
             wBitsPerSample - bit depth
             wBlockAlign - sample frame size in bytes
             dwAvgBytesPerSec - used for estimating RAM allocation"""
-    
+
     def __init__(self, dwChunkSize=16, wFormatTag=1, wChannels=2,
                  dwSamplesPerSec=44100, wBitsPerSample=16):
         self.sChunkID = "fmt "
@@ -49,9 +49,8 @@ class WaveDataChunk:
             sChunkID - must be 'data'
             dwChunkSize - length of header in bytes
             shortArray - 8-bit audio"""
-    
+
     def __init__(self, dwChunkSize=0, shortArray=[]):
         self.sChunkID = "data"
         self.dwChunkSize = dwChunkSize
         self.shortArray = shortArray
-
